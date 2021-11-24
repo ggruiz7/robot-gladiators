@@ -57,7 +57,7 @@ var fight = function(enemy) {
                 window.alert(enemy.name + " has " + enemy.health + " health.");
             }
 
-            var damage = randomNumber(enemy.attack - 2, enemy.attack + 2);
+            var damage = randomNumber(enemy.attack - 3, enemy.attack);
             playerInfo.health = Math.max(0, playerInfo.health - damage);
             console.log(enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health!"); 
             if (playerInfo.health <= 0) {
