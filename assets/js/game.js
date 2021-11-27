@@ -7,28 +7,44 @@ var randomNumber = function(min, max) {
 // alert to begin game
 window.alert("Welcome to Robot Gladiators!");
 
+// conditional recursive function call
+var fightOrSkip = function() {
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP'.");
+    
+    if (promptFight === "" || promptFight === null) {   // OR 'if (!promptFight) {...}' works with falsey values
+        window.alert("Select a valid option, fool.");
+        return fightOrSkip();
+    }
+    
+    promptFight = promptFight.toLowerCase();
+
+    // if player picks "skip" confirm and then stop the loop
+    if (promptFight === "skip") {
+        // confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure?");
+        
+        // if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to be a slimy rat!");
+            // subtract money from playerMoney for skipping
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
+            return true;
+            // shop();
+        }   
+    }
+    return false;
+}
+
 var fight = function(enemy) {
-    // repeat and execute as long as the enemy and player robots are alive (wjile loop)
+    // repeat and execute as long as the enemy and player robots are alive (while loop)
     while (playerInfo.health > 0 && enemy.health > 0) {
     // set two conditions that must both resolve to true to execute with &&
 
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP'.")
-        
-        // if the player chooses to skip
-        if (promptFight === "SKIP" || promptFight === "skip") {
-            // confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you want to be a coward?");
-
-            // if yes (true), leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to be a slimy rat!");
-
-                // subtract money from playerInfo.money for skipping
-                playerInfo.money = playerInfo.money - 10
-                console.log("player money", playerInfo.money);
-                break;
-            }
-        }  
+        // ask player if they'd like to fight or skip using fightOrSkip function
+        if (fightOrSkip()) {
+            // if true, leave fight by breaking loop
+            break;
+        }
 
         // generate random damage value based on player's attack power
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -107,7 +123,7 @@ var startGame = function() {
 }
 
 // function to end the entire game
-var endGame = function(){
+var endGame = function() {
     window.alert("The battle has ended.")
     
     // if player is still alive, player wins
@@ -179,6 +195,7 @@ var playerInfo = {
     health: 100,
     attack: 10,
     money: 10,
+
 
     reset: function() {
         this.health = 100;
